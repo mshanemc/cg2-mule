@@ -1,0 +1,34 @@
+#%RAML 1.0 Library
+uses:
+  odata: libraries/odataLibrary.raml
+
+types:
+  Employees:
+    (odata.remote): employees
+    properties:
+      EmployeeNumber:
+          type: number
+          (odata.key): true
+          (odata.nullable): false
+          format: int32
+          required: false
+      Dob:
+          type: string
+          (odata.key): false
+          (odata.nullable): true
+      FirstName:
+          type: string
+          (odata.key): false
+          (odata.nullable): true
+      LastName:
+          type: string
+          (odata.key): false
+          (odata.nullable): true
+      Gender:
+          type: string
+          (odata.key): false
+          (odata.nullable): true
+      HireDate:
+          type: string
+          (odata.key): false
+          (odata.nullable): true
