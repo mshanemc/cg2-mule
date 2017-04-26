@@ -18,7 +18,7 @@
 		<apikit.odata.version>1.0.1</apikit.odata.version>
 	</properties>
 
-	<build>
+	<build>  
 		<plugins>
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
@@ -203,7 +203,13 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>
+	<dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-json</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 	<repositories>
 		<repository>

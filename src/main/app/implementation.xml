@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <http:listener-config name="implEmpQry" host="0.0.0.0" port="8082" doc:name="HTTP Listener Configuration"/>
+    <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
+    <db:generic-config name="Generic_Database_Configuration" url="jdbc:sqlserver://127.0.0.1;databaseName=MuleDemoDb;user=sa;password=abc123#;"
+		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" doc:name="Generic Database Configuration" />
+	
+    <flow name="implementationFlow">
+        <composite-source doc:name="Composite Source">
+            <http:listener config-ref="implEmpQry" path="/EmpQry" doc:name="HTTP"/>
+            <vm:inbound-endpoint exchange-pattern="one-way" path="employee" connector-ref="VM" doc:name="VM"/>
+        </composite-source>
+        <dw:transform-message doc:name="Build Query">
+            <dw:set-payload resource="classpath:ReadCollection.dwl"/>
+        </dw:transform-message>
+        <logger message="#[payload]" level="INFO" doc:name="LogSQL"/>
+        <db:select config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:dynamic-query><![CDATA[#[payload]]]></db:dynamic-query>
+        </db:select>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <logger message="#[payload]" level="INFO" doc:name="SQL Result"/>
+        <dw:transform-message doc:name="Build Response">
+            <dw:set-payload resource="classpath:BuildOdataResponse.dwl"/>
+        </dw:transform-message>
+        <logger message="#[payload]" level="INFO" doc:name="OData"/>
+ 
+    </flow>
+</mule>
