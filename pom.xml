@@ -12,9 +12,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<mule.version>3.8.4</mule.version>
+		<mule.version>3.9.1</mule.version>
 		<mule.tools.version>1.2</mule.tools.version>
-		<apikit.version>3.8.1</apikit.version>
+		<apikit.version>3.9.1</apikit.version>
 		<apikit.odata.version>1.0.1</apikit.odata.version>
 	</properties>
 
@@ -230,13 +230,19 @@
 			<url>http://repository.mulesoft.org/snapshots/</url>
 			<layout>default</layout>
 		</repository>
+		<repository>
+	        <id>mulesoft-public</id>
+	        <name>MuleSoft Public Repository</name>
+	        <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+	        <layout>default</layout>
+	    </repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-release</id>
 			<name>mulesoft release repository</name>
 			<layout>default</layout>
-			<url>http://repository.mulesoft.org/releases/</url>
+			<url>http://repository.mulesoft.orgå/releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
